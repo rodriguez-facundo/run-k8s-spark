@@ -2,10 +2,13 @@
 # This is a small container capable of sending Spark python scripts to a Spark master container running on k8s
 
 ### Usage
+If you don't want to use the docker, a simple  `python kubectl.py job.py` will send the job from your local machine if kubectl has access to the cluster. 
 
-- Go to https://github.com/rodriguez-facundo/sparky and deploy the 2 files with Spark into your cluster.
+Otherwise:
 
-- Find the kubectl config file (~/.kube/config in my mac). It looks somewhat like this (I hide some fields):
+- If you don't have a k8s Spark deplyment, go to https://github.com/rodriguez-facundo/sparky.
+
+- Now we need to find the kubectl credentials in your local machine (~/.kube/config in mine). It should look somewhat like this (I hide some fields):
 
 ```
 apiVersion: v1
@@ -36,32 +39,18 @@ users:
       name: gcp
 ``` 
 
-- Ones you have that file, create a simple Spark job like this one:
-
-```
-from pyspark import SparkConf, SparkContext
-
-conf = SparkConf().setAppName('KubernetesSpark').setMaster('spark://YOUR_SERVER_IP:7077')
-
-sc = SparkContext(conf=conf)
-
-words = 'the quick brown fox jumps over the lazy dog the quick brown fox jumps over the lazy dog'
-
-seq = words.split()
-data = sc.parallelize(seq)
-counts = data.map(lambda word: (word, 1)).reduceByKey(lambda a, b: a + b).collect()
-dict(counts)
-sc.stop()
-```
-
 - Now:
     - Modify config.json to be aligned with your server (Spark namespace).
     - Modify job.py example to get your Spark Load Balancer IP (the one with 7077 port).
+
+- Run:
+    - `docker build -t send-spark-job .` to build a docker image.
 
 - Run jobs like this:
 
 ```
 docker run -it \
     -v abs_path_to_local_config:/root/.kube/config DOCKER_IMAGE \   <-- kubectl credentials
+    send-spark-job                                                  <-- Image you just built
     job.py                                                          <-- Spark job
 ```
