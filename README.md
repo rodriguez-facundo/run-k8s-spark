@@ -3,9 +3,9 @@
 
 ### Usage
 
-Find the kubectl config file (~/.kube/config in my mac). It looks somewhat like this:
+- Go to https://github.com/rodriguez-facundo/sparky and deploy the 2 files with Spark into your cluster.
 
-(I hide some fields)
+- Find the kubectl config file (~/.kube/config in my mac). It looks somewhat like this (I hide some fields):
 
 ```
 apiVersion: v1
@@ -36,7 +36,7 @@ users:
       name: gcp
 ``` 
 
-Ones you have that file, create a simple Spark job like this one:
+- Ones you have that file, create a simple Spark job like this one:
 
 ```
 from pyspark import SparkConf, SparkContext
@@ -54,11 +54,14 @@ dict(counts)
 sc.stop()
 ```
 
-Now you can run jobs like this:
+- Now:
+    - Modify config.json to be aligned with your server (Spark namespace).
+    - Modify job.py example to get your Spark Load Balancer IP (the one with 7077 port).
+
+- Run jobs like this:
 
 ```
 docker run -it \
-    -v abs_path_to_config.json:/home/gkh/config.json \              <-- Spark config file
     -v abs_path_to_local_config:/root/.kube/config DOCKER_IMAGE \   <-- kubectl credentials
     job.py                                                          <-- Spark job
 ```
