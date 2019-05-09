@@ -1,0 +1,26 @@
+apiVersion: v1
+clusters:
+- cluster:
+    certificate-authority-data: VERY_LONG_NONSENSE
+    server: https://AN_IP_GOES_HERE
+  name: A_NAME
+contexts:
+- context:
+    cluster: A_NAME
+    user: A_NAME
+  name: A_NAME
+current-context: A_NAME
+kind: Config
+preferences: {}
+users:
+- name: A_NAME
+  user:
+    auth-provider:
+      config:
+        access-token: AN_ACCESS_TOKEN
+        cmd-args: config config-helper --format=json
+        cmd-path: /google-cloud-sdk/bin/gcloud
+        expiry: 2019-05-09T23:29:56Z
+        expiry-key: '{.credential.token_expiry}'
+        token-key: '{.credential.access_token}'
+      name: gcp

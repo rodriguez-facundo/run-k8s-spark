@@ -1,0 +1,14 @@
+{
+    "NAMESPACE": {
+        "value": "sparky",
+        "info": "namespace where spark was deployed."
+    },
+    "DEST_FOLDER": {
+        "value": "/my_scripts",
+        "info": "folder in the k8s spark container where to save the script (this folder must exists)."
+    },
+    "MATCH_NAME": {
+        "value": "spark-master",
+        "info": "string to match when selecting the pod where to run the script."
+    }
+}
